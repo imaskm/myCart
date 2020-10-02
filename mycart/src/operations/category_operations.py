@@ -8,7 +8,6 @@ def show_all_categories():
     results = categories_db.get_all_categories()
 
     if not results:
-        print("No Categories Found!!")
         return
 
     all_categories: List[categories.Category] = []
@@ -25,5 +24,6 @@ def show_all_categories():
             row=[]
     if row:
         table_category.append(row)
-    print(tabulate(table_category))
+
+    return table_category
 

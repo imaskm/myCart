@@ -15,7 +15,8 @@ CATEGORY_TABLE = """ CREATE TABLE IF NOT EXISTS categories(
 PRODUCT_TABLE = """ CREATE TABLE IF NOT EXISTS products (
                                         id integer PRIMARY KEY AUTOINCREMENT,
                                         name text NOT NULL,
-                                        price real NOT NULL
+                                        price real NOT NULL,
+                                        quantity integer DEFAULT 0
                                         ); """
 
 PRODUCT_CATEGORY_TABLE = """ CREATE TABLE IF NOT EXISTS productcategories(
@@ -28,6 +29,7 @@ PRODUCT_CATEGORY_TABLE = """ CREATE TABLE IF NOT EXISTS productcategories(
 CART_TABLE = """ CREATE TABLE IF NOT EXISTS carts (
                                         id integer PRIMARY KEY AUTOINCREMENT,
                                         username text NOT NULL UNIQUE,
+                                        is_active integer DEFAULT 1,
                                         FOREIGN KEY (username) REFERENCES users(username)
                                     );  """
 
@@ -44,9 +46,10 @@ BILL_TABLE = """ CREATE TABLE IF NOT EXISTS bills (
                                         id integer PRIMARY KEY AUTOINCREMENT,
                                         total_amount real NOT NULL,
                                         discount real NOT NULL,
-                                        cart_details_id integer NOT NULL,
+                                        cart_id integer NOT NULL,
                                         username text NOT NULL UNIQUE,
-                                        FOREIGN KEY (cart_details_id) REFERENCES cartdetails(id)
+                                        FOREIGN KEY (cart_id) REFERENCES carts(id),
+                                        FOREIGN KEY (username) REFERENCES users(username)
                                     );  """
 
 ALL_TABLES = (USERS_TABLE,CATEGORY_TABLE,PRODUCT_TABLE,PRODUCT_CATEGORY_TABLE,CART_TABLE,CART_DETAILS_TABLE,BILL_TABLE)
