@@ -1,5 +1,53 @@
 from unittest import TestCase
+from unittest.mock import patch
+from src.classes import users
+from src.operations import users_operations
+from src.validations import validate_users
 
 
 class TestUser(TestCase):
-    pass
+
+    def test_object_creation(self):
+        user = users.User("username", "password", "name", 0)
+        self.assertIsInstance(user, users.User)
+
+    @patch('src.db_operations.users_db.update_users_active_cart')
+    @patch('src.operations.products_operations.get_product_details_if_can_be_added')
+    def test_add_product_to_users_cart(self, get_product_details_if_can_be_added_mock, update_users_active_cart_mock):
+        get_product_details_if_can_be_added_mock.return_value = True
+        update_users_active_cart_mock.return_value = True
+        result = users_operations.add_product_to_users_cart(users.User, 1, 1)
+        self.assertEqual(result, True)
+
+    def test_validate_users_validate_username_false(self):
+        result = validate_users.validate_username("tes")
+        self.assertEqual(result, False)
+
+    def test_validate_users_validate_username_true(self):
+        result = validate_users.validate_username("testuser")
+        self.assertEqual(result, True)
+
+    def test_validate_users_validate_password_true(self):
+        result = validate_users.validate_password("testpwd")
+        self.assertEqual(result, True)
+
+    def test_validate_users_validate_password_false(self):
+        result = validate_users.validate_password("pwd")
+        self.assertEqual(result, False)
+
+    def test_validate_users_validate_name_true(self):
+        result = validate_users.validate_username("testname")
+        self.assertEqual(result, True)
+
+    def test_validate_users_validate_name_false(self):
+        result = validate_users.validate_username("I")
+        self.assertEqual(result, False)
+
+
+
+
+
+
+
+
+
