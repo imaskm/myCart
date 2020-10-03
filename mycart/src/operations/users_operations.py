@@ -2,6 +2,7 @@ import getpass
 from src.classes import users, products
 from src.custom_exceptions import users_exceptions
 from src.db_operations import users_db, products_db
+from src.operations import products_operations
 
 
 def register():
@@ -46,21 +47,7 @@ def login():
 
 def add_product_to_users_cart(user, product_id, quantity=1):
 
-    product_details = products_db.get_product_details(product_id)
-
-    if not product_details:
-        print("\nCouldn't add product to cart, try again\n")
-        return None
-
-    product_details = products.Product(*product_details)
-
-    if product_details.quantity == 0:
-        print("\nProduct is out of stock!!")
-        return
-
-    if product_details.quantity < quantity:
-        print(f"Only {product_details.quantity} items of this product available \n")
-        return
+    product_details = products_operations.get_product_details_if_can_be_added(product_id,quantity)
 
     return users_db.update_users_active_cart(user, product_details, quantity)
 

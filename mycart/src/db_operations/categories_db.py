@@ -68,3 +68,23 @@ def get_category_names_for_all_product():
     finally:
         if db_conn:
             db_conn.close()
+
+
+def insert_new_category(category_name):
+
+    try:
+        db_conn = None
+        db_conn = init.create_connection()
+        cursor = db_conn.cursor()
+        sql_cmd = 'INSERT INTO categories(name) VALUES(?);'
+        cursor.execute(sql_cmd, (category_name,))
+
+        result = cursor.lastrowid
+        if result:
+            db_conn.commit()
+            return result
+    except:
+        return None
+    finally:
+        if db_conn:
+            db_conn.close()

@@ -7,7 +7,6 @@ def show_all_products():
     products_without_categories = products_db.get_all_products()
 
     if not products_without_categories:
-        print("\nNo Products Found!!\n")
         return None
 
     categories_with_products = categories_db.get_category_names_for_all_product()
@@ -56,3 +55,24 @@ def get_products_by_ids(product_ids):
         all_products.append(product_obj)
 
     return all_products
+
+
+def get_product_details_if_can_be_added(product_id, quantity):
+
+    product_details = products_db.get_product_details(product_id)
+
+    if not product_details:
+        print("\nCouldn't add product to cart, try again\n")
+        return None
+
+    product_details = products.Product(*product_details)
+
+    if product_details.quantity == 0:
+        print("\nProduct is out of stock!!")
+        return
+
+    if product_details.quantity < quantity:
+        print(f"Only {product_details.quantity} items of this product available \n")
+        return
+
+    return product_details

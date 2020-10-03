@@ -1,6 +1,6 @@
 class Bill:
 
-    def __init__(self, total_amount: float, discount: float, cart_id, username ):
+    def __init__(self ,total_amount: float, discount: float, cart_id, username ):
         self.id = None
         self.total_amount = total_amount
         self.discount = discount

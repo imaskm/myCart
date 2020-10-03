@@ -6,7 +6,7 @@ def validate_username(username: str):
 
 
 def validate_name(name: str):
-    return re.match("^[\\w]{2,30}$", name) is not None
+    return re.match("^[\\w ]{2,30}$", name) is not None
 
 
 def validate_password(password: str):

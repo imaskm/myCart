@@ -35,3 +35,25 @@ def get_cartdetails_from_id(cart_id):
             db_conn.close()
 
 
+def remove_product_from_cart(cart_id, product_id,is_only_item_in_cart):
+
+    try:
+        db_conn = None
+        db_conn = init.create_connection()
+        cursor = db_conn.cursor()
+        cursor.execute("BEGIN")
+        sql_cmd = 'DELETE FROM cartdetails WHERE cart_id=? and product_id=?;'
+        cursor.execute(sql_cmd, (cart_id,product_id))
+        if cursor.rowcount != 0:
+            if is_only_item_in_cart:
+                sql_cmd="UPDATE carts SET is_active=0 WHERE id=?"
+                cursor.execute(sql_cmd, (cart_id,))
+
+            cursor.execute("COMMIT")
+            return True
+    except:
+        cursor.execute("ROLLBACK")
+        return
+    finally:
+        if db_conn:
+            db_conn.close()

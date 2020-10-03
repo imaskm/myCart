@@ -1,6 +1,5 @@
 import sqlite3
-from scripts import db_constants
-
+from mycart.scripts import db_constants
 
 # CustomExceptions
 class DatabaseConnectionError(BaseException):
@@ -30,12 +29,28 @@ def create_table(conn, table_query):
         raise TableCreationError
 
 
+def create_admin_user():
+    try:
+        conn = create_connection()
+        cur = conn.cursor()
+        sql_cmd = "INSERT INTO users(username,password,name,is_admin) VALUES('admin','admin','Admin',1);"
+        cur.execute(sql_cmd)
+        conn.commit()
+    except Exception as e:
+        # print(e)
+        return
+    finally:
+        conn.close()
+
+
 if __name__ == "__main__":
     try:
         conn = create_connection()
 
         for create_table_query in db_constants.ALL_TABLES:
             create_table(conn,create_table_query)
+
+        create_admin_user()
 
     except DatabaseConnectionError:
         print("Failed to connect to the DB")

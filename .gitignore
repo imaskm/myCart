@@ -3,3 +3,4 @@ envmycart
 gitignore
 __pycache__/
 *.pyc
+mycart.db

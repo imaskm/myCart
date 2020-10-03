@@ -1,7 +1,6 @@
-
 class Product:
 
-    def __init__(self, _id, name, price, quantity ,categories=tuple()):
+    def __init__(self, _id, name, price, quantity, categories=tuple()):
         self.__id = _id
         self.name = name
         self.price = price
@@ -11,17 +10,20 @@ class Product:
     def get_id(self):
         return self.__id
 
+    def set_id(self, value):
+        self.__id = value
+
     def __iter__(self):
 
         yield self.get_id()
         yield self.name
         yield self.price
-        yield self.quantity
+        yield "In Stock" if self.quantity > 0 else "Out of Stock"
         yield self.categories
 
     @staticmethod
     def headers():
-        return ['Product ID', 'Name', 'Price', 'Availability', 'Categories' ]
+        return ['Product ID', 'Name', 'Price', 'Availability', 'Categories']
 
     @property
     def name(self):

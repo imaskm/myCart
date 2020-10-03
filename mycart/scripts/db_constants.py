@@ -1,4 +1,6 @@
-DB_PATH = "/home/ashwani/work/MyCart/mycart.db"
+import os
+
+DB_PATH = os.environ["DB_PATH"]
 
 USERS_TABLE = """ CREATE TABLE IF NOT EXISTS users (
                                         username text PRIMARY KEY,
@@ -28,7 +30,7 @@ PRODUCT_CATEGORY_TABLE = """ CREATE TABLE IF NOT EXISTS productcategories(
 
 CART_TABLE = """ CREATE TABLE IF NOT EXISTS carts (
                                         id integer PRIMARY KEY AUTOINCREMENT,
-                                        username text NOT NULL UNIQUE,
+                                        username text NOT NULL,
                                         is_active integer DEFAULT 1,
                                         FOREIGN KEY (username) REFERENCES users(username)
                                     );  """
@@ -47,7 +49,7 @@ BILL_TABLE = """ CREATE TABLE IF NOT EXISTS bills (
                                         total_amount real NOT NULL,
                                         discount real NOT NULL,
                                         cart_id integer NOT NULL,
-                                        username text NOT NULL UNIQUE,
+                                        username text NOT NULL,
                                         FOREIGN KEY (cart_id) REFERENCES carts(id),
                                         FOREIGN KEY (username) REFERENCES users(username)
                                     );  """

@@ -29,7 +29,7 @@ def get_products_in_category(category_name):
         db_conn = None
         db_conn = init.create_connection()
         cursor = db_conn.cursor()
-        sql_cmd = 'SELECT id, name, price from products AS p WHERE p.id IN ( SELECT product_id from ' \
+        sql_cmd = 'SELECT id, name, quantity ,price from products AS p WHERE p.id IN ( SELECT product_id from ' \
                   'productcategories WHERE category_id=?);'
         cursor.execute(sql_cmd, (category_id,))
         result = cursor.fetchall()
@@ -70,6 +70,39 @@ def get_products_details(product_ids):
         return result if result else None
     except:
         return
+    finally:
+        if db_conn:
+            db_conn.close()
+
+
+def insert_new_product(product):
+    try:
+        db_conn = None
+        db_conn = init.create_connection()
+        cursor = db_conn.cursor()
+
+        cursor.execute("BEGIN")
+        sql_cmd = 'INSERT INTO products(name,price,quantity) VALUES(?,?,?);'
+        cursor.execute(sql_cmd, (product.name,product.price,product.quantity))
+        result = cursor.lastrowid
+
+        productcategories = []
+        total_inserts=0
+        for category in product.categories.split(","):
+            total_inserts+=1
+            productcategories.extend([result, category])
+
+        if result:
+            sql_cmd = f"INSERT INTO productcategories(product_id,category_id) VALUES " \
+                      f"{','.join(['(?,?)'] * total_inserts)};"
+            cursor.execute(sql_cmd, productcategories)
+
+            if cursor.lastrowid != 0:
+                cursor.execute("COMMIT")
+                return result
+    except:
+        cursor.execute("ROLLBACK")
+        return None
     finally:
         if db_conn:
             db_conn.close()
