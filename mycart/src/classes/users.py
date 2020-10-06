@@ -10,7 +10,7 @@ class User:
 
         return cls.instance
 
-    def __init__(self, username, password, name, is_admin=False):
+    def __init__(self, username, password, name, is_admin=0):
         self.username = username
         self.password = password
         self.name = name
@@ -45,3 +45,15 @@ class User:
         if not validate_users.validate_password(password):
             raise users_exceptions.InvalidPasswordException
         self._password = password
+
+    @property
+    def is_admin(self):
+        return self._is_admin
+
+    @is_admin.setter
+    def is_admin(self, value):
+        if value not in [0,1]:
+            raise ValueError("is_admin can contain either 0 or 1")
+        self._is_admin = value
+
+

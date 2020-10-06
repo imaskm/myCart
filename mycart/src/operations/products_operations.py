@@ -69,10 +69,10 @@ def get_product_details_if_can_be_added(product_id, quantity):
 
     if product_details.quantity == 0:
         print("\nProduct is out of stock!!")
-        return
+        return None
 
     if product_details.quantity < quantity:
         print(f"Only {product_details.quantity} items of this product available \n")
-        return
+        return None
 
     return product_details
