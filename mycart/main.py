@@ -178,13 +178,14 @@ def home(user: users.User = None):
                         else:
                             print(tabulate(cart_data, "keys", "github"))
                             continue
-
                     elif user_input == 6:
                         all_bill_data = cart_operations.checkout_cart(user)
                         if all_bill_data:
                             print("\nHere is your bill for last transaction\n")
                             print(tabulate(all_bill_data, "keys", "github"))
                             continue
+                        else:
+                            print("Unable to checkout cart")
 
                     elif user_input == 7:
                         product_id = int(input("Enter product id: "))

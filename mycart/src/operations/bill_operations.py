@@ -3,8 +3,9 @@ from src.operations import products_operations, cart_operations
 from src.db_operations import bill_db,cart_db
 from typing import List
 
+
 def get_id_and_quantity_if_products_can_be_billed_in_cart_of_user(user: users.User):
-    cart_details, product_details = cart_operations.get_cart_and_product_details(user)
+    cart_details, product_details = cart_operations.get_cart_and_product_details(user.username)
 
     product_ids_and_quantity=[]
 

@@ -38,6 +38,7 @@ def get_cart_data_to_print(username):
 
 
 def get_cart_and_product_details(username):
+
     cart_id = cart_db.get_active_cart_id_for_user(username)
 
     if not cart_id:
@@ -67,6 +68,7 @@ def get_cart_and_product_details(username):
 
 
 def checkout_cart(user):
+
     cart_id = cart_db.get_active_cart_id_for_user(user.username)
 
     if not cart_id:
@@ -78,10 +80,10 @@ def checkout_cart(user):
     total_amount = all_cart_data[-1]["Total Amount"]
     discount = all_cart_data[-1]["Discount"]
 
-    cart_details_objects, all_products = get_cart_and_product_details(user)
-
-    if not all_products:
-        return
+    # cart_details_objects, all_products = get_cart_and_product_details(user)
+    #
+    # if not all_products:
+    #     return
 
     new_bill = bills.Bill(total_amount, discount, cart_id, user.username)
 
